@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info:
+  title: affichage
+  version: 1.0.1
+  servers:
+    - url: http://lochalost:8000
+
+  paths:
+    /

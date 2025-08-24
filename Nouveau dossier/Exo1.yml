@@ -1,0 +1,23 @@
+ openapi: 3.0.3
+
+ info:
+  title: the new
+  version: 1.0.0
+
+ servers:
+  - url: http//localhost:8000
+
+ paths:
+   /ping:
+     get:
+       summary: Vérifie la disponibilité du serveur
+       responses:
+         200:
+           description: ronvoye ping
+           content:
+             text/plain:
+               schema:
+                 type: string
+                 example: pong
+
+
