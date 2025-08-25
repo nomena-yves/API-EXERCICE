@@ -2,8 +2,22 @@ openapi: 3.0.3
 info:
   title: affichage
   version: 1.0.1
-  servers:
+servers:
     - url: http://lochalost:8000
-
-  paths:
-    /
+paths:
+  /users:
+      get:
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          example: 1
+            - name: size
+            in: query
+            schema:
+              type: integer
+              example: 20
+              responses:
+                "200":
+                  description: ok
