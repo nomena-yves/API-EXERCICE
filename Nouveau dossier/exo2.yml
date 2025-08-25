@@ -21,3 +21,28 @@ paths:
       responses:
         "200":
           description: ok
+          content:
+            application/plain:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Alice
+                    email:
+                      type: string
+                      example: hei.Alice@gmail.com
+        400:
+          description: mauvaise type de parametre
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: bad types for provided query parameters
