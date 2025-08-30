@@ -13,7 +13,7 @@ paths:
       "200":
         description: ok
         content:
-          application/plain:
+          application/json:
             schema:
               type: array
               items:
@@ -29,30 +29,66 @@ paths:
                     example: false
    post:
     requestBody:
-    required: true
-    content:
-      application/json:
+     required: true
+     content:
+       application/json:
         schema:
           type: object
-          requered:
+          required:
             - id
             - name
             - completed
-        propriety:
-          id:
+          properties:
+           id:
             type: integer
             example: 2
-          name:
+           name:
             type: string
             example: cuisiner
-          completed:
+           completed:
             type: boolean
             example: true
-
-
-
-
-
-
-
-
+    responses:
+        "201":
+          description: votre task a été créé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: menage
+                  completed:
+                    type: boolean
+                    example: false
+ /tasks/{id}:
+   get:
+     description: lister les tasks a partir de son id
+     parameters:
+       - in: query
+         name: id
+         required: true
+         schema:
+           type: integer
+           example: 4
+     responses:
+      200:
+        description: la liste des tache par id
+        content:
+          application/json:
+           schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4
+              name:
+                type: string
+                example: menage
+              completed:
+                type: boolean
+                example: false
