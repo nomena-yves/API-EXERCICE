@@ -92,3 +92,57 @@ paths:
               completed:
                 type: boolean
                 example: false
+   delete:
+     description: suppression d un task
+     parameters:
+       - in: query
+         name: id
+         required: true
+         schema:
+           type: integer
+     responses:
+       "204":
+         description: tache supprimer avec succée
+
+ /tasks/:
+   delete:
+     description: supprimer une liste de tache
+     requestBody:
+       required: true
+       content:
+         applicaion/json:
+           schema:
+             type: array
+             items:
+               type: integer
+             example: [1,2,3]
+     responses:
+       "200":
+         description: suppression des taches
+         content:
+           application/json:
+             schema:
+               type: array
+               items:
+                 type: object
+                 properties:
+                   id:
+                     type: integer
+                     example: 3
+                   name:
+                     type: string
+                     example: acheter une produit
+                   completed:
+                     type: boolean
+                     example: done
+       "400":
+         description: aucune tache trouver
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: acune tache
+
