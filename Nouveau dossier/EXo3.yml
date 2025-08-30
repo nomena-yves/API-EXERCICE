@@ -1,3 +1,35 @@
 openapi: 3.0.3
 info:
-  title:
+ title: Model task
+ version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+ /tasks:
+   get:
+    responses:
+      "200":
+        description: ok
+        content:
+          application/plain:
+            schema:
+              type: array
+              items:
+                properties:
+                  "id":
+                    type: integer
+                    example: 1
+                  "name":
+                    type: string
+                    example: menage
+                  "completed":
+                    type: boolean
+                    example: false
+
+
+
+
+
+
