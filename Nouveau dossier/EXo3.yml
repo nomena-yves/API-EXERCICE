@@ -27,6 +27,29 @@ paths:
                   "completed":
                     type: boolean
                     example: false
+   post:
+    requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          requered:
+            - id
+            - name
+            - completed
+        propriety:
+          id:
+            type: integer
+            example: 2
+          name:
+            type: string
+            example: cuisiner
+          completed:
+            type: boolean
+            example: true
+
+
 
 
 
