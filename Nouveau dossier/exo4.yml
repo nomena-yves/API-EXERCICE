@@ -3,7 +3,35 @@ info:
   title: Product API
   version: 1.0.0
 
-paths: {}
+paths:
+  /products:
+    get:
+      summary: Récupérer une liste de produits
+      parameters:
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/QParam'
+      responses:
+        '200':
+          description: Liste des produits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                multipleProducts:
+                  summary: Exemple avec plusieurs produits
+                  value:
+                    - name: "Pomme"
+                      expiration_datetime: "2025-09-01T12:00:00Z"
+                      price: 1.20
+                    - name: "Banane"
+                      expiration_datetime: "2025-09-05T18:30:00Z"
+                      price: 0.80
+                emptyList:
+                  summary: Exemple avec une liste vide
+                  value: []
 
 components:
   schemas:
@@ -12,7 +40,7 @@ components:
       properties:
         name:
           type: string
-          example: "Lait en poudre"
+          example: "Orange"
         expiration_datetime:
           type: string
           format: date-time
@@ -20,8 +48,26 @@ components:
         price:
           type: number
           format: float
-          example: 12.50
+          example: 2.50
       required:
         - name
         - expiration_datetime
         - price
+
+  parameters:
+    LimitParam:
+      name: limit
+      in: query
+      description: Nombre maximum d’éléments
+      required: false
+      schema:
+        type: integer
+        example: 10
+    QParam:
+      name: q
+      in: query
+      description: Terme de recherche
+      required: false
+      schema:
+        type: string
+        example: "fruit"
