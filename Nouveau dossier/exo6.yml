@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: User Profile API
+  version: 1.0.0
+
+paths:
+  /users:
+    get:
+      tags: [Users]
+      summary: Liste tous les profils utilisateurs
+      responses:
+        "200":
+          description: Liste des utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserProfile"
+              examples:
+                multiple:
+                  summary: Plusieurs utilisateurs
+                  value:
+                    - id: "u123"
+                      first_name: "Jean"
+                      last_name: "Dupont"
+                      email: "jean.dupont@example.com"
+                      language: "fr"
+                    - id: "u124"
+                      first_name: "Maria"
+                      last_name: "Rakoto"
+                      email: "maria.rakoto@example.com"
+                      language: "mg"
+                empty:
+                  summary: Aucun utilisateur
+                  value: []
+    post:
+      tags: [Users]
+      summary: Créer un nouveau profil utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserProfile"
+            example:
+              first_name: "Alice"
+              last_name: "Smith"
+              birthdate: "1990-05-10"
+              email: "alice.smith@example.com"
+              address_street: "10 Rue de la Paix"
+              address_city: "Paris"
+              address_country: "FR"
+              address_postal_code: 75002
+              needs_newsletter: true
+              language: "fr"
+      responses:
+        "201":
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/{id}:
+    parameters:
+      - $ref: "#/components/parameters/UserId"
+    get:
+      tags: [Users]
+      summary: Récupérer un utilisateur par son ID
+      responses:
+        "200":
+          description: Profil utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "404":
+          description: Utilisateur non trouvé
+    put:
+      tags: [Users]
+      summary: Remplacer entièrement le profil utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      responses:
+        "200":
+          description: Profil remplacé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/{id}/address:
+    parameters:
+      - $ref: "#/components/parameters/UserId"
+    put:
+      tags: [Users]
+      summary: Mettre à jour uniquement l’adresse d’un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Address"
+            example:
+              address_street: "15 Avenue de l’Indépendance"
+              address_city: "Antananarivo"
+              address_country: "MG"
+              address_postal_code: 101
+      responses:
+        "200":
+          description: Adresse mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/{id}/preferences:
+    parameters:
+      - $ref: "#/components/parameters/UserId"
+    put:
+      tags: [Users]
+      summary: Mettre à jour uniquement les préférences utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPreferences"
+            example:
+              needs_newsletter: false
+              language: "eng"
+      responses:
+        "200":
+          description: Préférences mises à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+components:
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      example: "u123"
+
+  schemas:
+    # Schéma complet avec allOf
+    UserProfile:
+      allOf:
+        - $ref: "#/components/schemas/BaseUser"
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "u123"
+
+    # Schéma utilisé à la création (sans id)
+    CreateUserProfile:
+      allOf:
+        - $ref: "#/components/schemas/BaseUser"
+
+    # Schéma de base partagé
+    BaseUser:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - birthdate
+        - email
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        address_street:
+          type: string
+        address_city:
+          type: string
+        address_country:
+          type: string
+        address_postal_code:
+          type: integer
+        needs_newsletter:
+          type: boolean
+        language:
+          type: string
+          enum: [mg, fr, eng]
+
+    # Sous-ressource adresse
+    Address:
+      type: object
+      properties:
+        address_street:
+          type: string
+        address_city:
+          type: string
+        address_country:
+          type: string
+        address_postal_code:
+          type: integer
+
+
+    UserPreferences:
+      type: object
+      properties:
+        needs_newsletter:
+          type: boolean
+        language:
+          type: string
+          enum: [mg, fr, eng]
